@@ -1,5 +1,6 @@
 package refactorings;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import multirefactor.AccessFlags;
@@ -39,6 +40,7 @@ import recoder.service.CrossReferenceSourceInfo;
 
 public abstract class Refactoring extends TwoPassTransformation 
 {
+	private static final String MULTI_REFACTOR_FOLDER = "MultiRefactor" + File.separatorChar;
 	protected TwoPassTransformation transformation;
 	protected String refactoringInfo; 
 	protected ArrayList<String> affectedClasses;
@@ -81,8 +83,8 @@ public abstract class Refactoring extends TwoPassTransformation
 		{
 			int index = 5;
 			
-			if (getSourceFileRepository().getKnownCompilationUnits().get(i).getName().indexOf("MultiRefactor\\") != 0)
-				index = getSourceFileRepository().getKnownCompilationUnits().get(i).getName().indexOf("MultiRefactor\\") + 14;
+			if (getSourceFileRepository().getKnownCompilationUnits().get(i).getName().indexOf(MULTI_REFACTOR_FOLDER) != 0)
+				index = getSourceFileRepository().getKnownCompilationUnits().get(i).getName().indexOf(MULTI_REFACTOR_FOLDER) + 14;
 			
 			String unitName = getSourceFileRepository().getKnownCompilationUnits().get(i).getName().substring(index);
 			
@@ -454,8 +456,8 @@ public abstract class Refactoring extends TwoPassTransformation
 	// a class, truncated to the local package directory.
 	protected String getFileName(String unit, String type)
 	{		
-		int firstDash = (unit.indexOf("MultiRefactor\\") == -1) ? 5 : unit.indexOf("MultiRefactor\\") + 14;
-		int lastDash = unit.lastIndexOf("\\");
+		int firstDash = (unit.indexOf(MULTI_REFACTOR_FOLDER) == -1) ? 5 : unit.indexOf(MULTI_REFACTOR_FOLDER) + 14;
+		int lastDash = unit.lastIndexOf(File.separatorChar);
 		String fileName = unit.substring(firstDash, lastDash);
 		return fileName + type;
 	}
